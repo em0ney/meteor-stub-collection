@@ -48,6 +48,38 @@ Tinytest.add('stub-collection: find() returns a \'cursor\' with a functional for
   test.equal(resultantNames, ['item 1', 'item 3']);
 });
 
+/* Tests for $in */
+Tinytest.add('stub-collection: matchDollarIn matches matching items', function(test) {
+  var item = {attr1: 'attr1', attr2: false};
+  var key = 'attr1';
+  var value = ['attr4', 'attr1'];
+  test.isTrue(matchDollarIn(item, key, value));
+  test.isFalse(matchDollarIn(item, key, ['attr5', true, 3]));
+});
+
+Tinytest.add('stub-collection: matchAttributeOnItem correctly pulls apart $in param', function(test) {
+  var item = {attr1: 'attr1', attr2: false};
+  var key = 'attr1';
+  var value = {$in: ['attr4', 'attr1']};
+  test.isTrue(matchAttributeOnItem(item, key, value));
+  test.isFalse(matchAttributeOnItem(item, key, {$in: ['attr5', true, 3]}));
+});
+
+Tinytest.add('stub-collection: find() matches $in on attributes', function(test) {
+  var TestCollection = new StubCollection();
+  TestCollection._setItems([
+    {name: 'item 1', numericAttribute: 1},
+    {name: 'item 2', numericAttribute: 2},
+    {name: 'item 3', numericAttribute: 1}
+  ]);
+  var resultantNames = [];
+  TestCollection.find({name: {$in: ['item 1', 'item 3']}}).forEach(function(res) {
+    resultantNames.push(res.name);
+  });
+
+  test.equal(resultantNames, ['item 1', 'item 3']);
+});
+
 Tinytest.add('stub-collection: findOne() with no arguments returns the first found item', function(test) {
   var TestCollection = new StubCollection();
   var item = {name: 'test item', numericAttribute: 42};

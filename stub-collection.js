@@ -14,7 +14,7 @@ StubCollection.prototype.find = function(selector) {
 
   var items = this._items;
   return {
-    _res:  _.isEmpty(selector) ? items : _.where(items, selector),
+    _res:  _.isEmpty(selector) ? items : matchItems(items, selector),
     fetch: function() {
       return this._res;
     },
