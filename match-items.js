@@ -37,7 +37,6 @@ matchAttributeOnItem = function(item, key, value) {
 
 matchDollarIn = function(item, key, valueArray) {
   return _.some(valueArray, function(value) {
-    console.log([item[key], value]);
     return item[key] === value;
   });
 };
