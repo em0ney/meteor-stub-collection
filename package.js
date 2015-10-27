@@ -9,7 +9,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
   api.use([
-    'ecmascript',
+    'ecmascript@0.1.6',
     'underscore',
     'random'
   ]);
@@ -23,7 +23,7 @@ Package.onUse(function(api) {
 });
 
 Package.onTest(function(api) {
-  api.use(['tinytest', 'ecmascript', 'underscore', 'random']);
+  api.use(['tinytest', 'ecmascript@0.1.6', 'underscore', 'random']);
   api.addFiles([
     'match-items.js',
     'stub-collection.js'
