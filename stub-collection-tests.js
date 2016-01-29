@@ -108,6 +108,20 @@ Tinytest.add('stub-collection: findOne() matching no elements returns undefined'
   test.isUndefined(TestCollection.findOne());
 });
 
+Tinytest.add('stub-collection: findOne() with a selector dot notation string returns the matching element', function(test) {
+  var TestCollection = new StubCollection();
+  var item = {_id: 'abc123', names: { firstName: 'Bob', lastName: 'Bobstein' }, numericAttribute: 42};
+  TestCollection._setItems([item]);
+  test.equal(TestCollection.findOne({'names.firstName': 'Bob'}), item);
+});
+
+Tinytest.add('stub-collection: findOne() with a two part selector dot notation string returns the matching element', function(test) {
+  var TestCollection = new StubCollection();
+  var item = {_id: 'abc123', names: { firstName: 'Bob', lastName: 'Bobstein' }, numericAttribute: 42};
+  TestCollection._setItems([item]);
+  test.equal(TestCollection.findOne({'names.firstName': 'Bob', 'names.lastName': 'Bobstein'}), item);
+});
+
 Tinytest.add('stub-collection: update() with a selector argument updates matching items', function(test) {
   var TestCollection = new StubCollection();
   TestCollection._setItems([
