@@ -36,6 +36,22 @@ matchAttributeOnItem = function(item, key, value) {
       return matchDollarIn(item, key, value1);
     }
 
+    if (key1 === '$gte') {
+      return item[key] >= value1;
+    }
+
+    if (key1 === '$lte') {
+      return item[key] <= value1;
+    }
+
+    if (key1 === '$gt') {
+      return item[key] > value1;
+    }
+
+    if (key1 === '$lt') {
+      return item[key] < value1;
+    }
+
     // currently unsupported operation - return false
     return false;
   });

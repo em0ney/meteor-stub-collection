@@ -80,6 +80,70 @@ Tinytest.add('stub-collection: find() matches $in on attributes', function(test)
   test.equal(resultantNames, ['item 1', 'item 3']);
 });
 
+Tinytest.add('stub-collection: find() matches $gte on attributes', function(test) {
+  var TestCollection = new StubCollection();
+  TestCollection._setItems([
+    {name: 'item 1', numericAttribute: 1},
+    {name: 'item 2', numericAttribute: 5},
+    {name: 'item 3', numericAttribute: 3},
+    {name: 'item 4', numericAttribute: 4}
+  ]);
+  var resultantNames = [];
+  TestCollection.find({numericAttribute: {$gte: 4}}).forEach(function(res) {
+    resultantNames.push(res.name);
+  });
+
+  test.equal(resultantNames, ['item 2', 'item 4']);
+});
+
+Tinytest.add('stub-collection: find() matches $lte on attributes', function(test) {
+  var TestCollection = new StubCollection();
+  TestCollection._setItems([
+    {name: 'item 1', numericAttribute: 1},
+    {name: 'item 2', numericAttribute: 5},
+    {name: 'item 3', numericAttribute: 3},
+    {name: 'item 4', numericAttribute: 4}
+  ]);
+  var resultantNames = [];
+  TestCollection.find({numericAttribute: {$lte: 3}}).forEach(function(res) {
+    resultantNames.push(res.name);
+  });
+
+  test.equal(resultantNames, ['item 1', 'item 3']);
+});
+
+Tinytest.add('stub-collection: find() matches $gt on attributes', function(test) {
+  var TestCollection = new StubCollection();
+  TestCollection._setItems([
+    {name: 'item 1', numericAttribute: 1},
+    {name: 'item 2', numericAttribute: 5},
+    {name: 'item 3', numericAttribute: 3},
+    {name: 'item 4', numericAttribute: 4}
+  ]);
+  var resultantNames = [];
+  TestCollection.find({numericAttribute: {$gt: 4}}).forEach(function(res) {
+    resultantNames.push(res.name);
+  });
+
+  test.equal(resultantNames, ['item 2']);
+});
+
+Tinytest.add('stub-collection: find() matches $lt on attributes', function(test) {
+  var TestCollection = new StubCollection();
+  TestCollection._setItems([
+    {name: 'item 1', numericAttribute: 1},
+    {name: 'item 2', numericAttribute: 5},
+    {name: 'item 3', numericAttribute: 3},
+    {name: 'item 4', numericAttribute: 4}
+  ]);
+  var resultantNames = [];
+  TestCollection.find({numericAttribute: {$lt: 3}}).forEach(function(res) {
+    resultantNames.push(res.name);
+  });
+
+  test.equal(resultantNames, ['item 1']);
+});
+
 Tinytest.add('stub-collection: findOne() with no arguments returns the first found item', function(test) {
   var TestCollection = new StubCollection();
   var item = {name: 'test item', numericAttribute: 42};
