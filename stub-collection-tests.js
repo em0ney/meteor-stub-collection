@@ -186,6 +186,13 @@ Tinytest.add('stub-collection: findOne() with a two part selector dot notation s
   test.equal(TestCollection.findOne({'names.firstName': 'Bob', 'names.lastName': 'Bobstein'}), item);
 });
 
+Tinytest.add('stub-collection: findOne() with a selector dot notation string and matches $gte on attributes', function(test) {
+  var TestCollection = new StubCollection();
+  var item = {_id: 'abc123', names: { firstName: 'Bob', lastName: 'Bobstein' }, numericAttribute: { upper: 42 }};
+  TestCollection._setItems([item]);
+  test.equal(TestCollection.findOne({'numericAttribute.upper' : {$gte: 30}}), item);
+});
+
 Tinytest.add('stub-collection: update() with a selector argument updates matching items', function(test) {
   var TestCollection = new StubCollection();
   TestCollection._setItems([
