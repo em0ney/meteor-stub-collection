@@ -21,13 +21,13 @@ matchItems = function(items, selector) {
 *
 */
 matchAttributeOnItem = function(item, key, value) {
+  var dotIndex = key.indexOf('.');
+  if (dotIndex > -1) {
+    var first = key.slice(0, dotIndex);
+    return matchAttributeOnItem(item[first], key.slice(dotIndex + 1), value);
+  }
+    
   if (typeof value !== 'object') {
-    var dotIndex = key.indexOf('.');
-    if (dotIndex > -1) {
-      var first = key.slice(0, dotIndex);
-      return matchAttributeOnItem(item[first], key.slice(dotIndex + 1), value);
-    }
-
     return item[key] === value;
   }
 
