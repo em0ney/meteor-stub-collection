@@ -10,7 +10,7 @@ StubCollection = class {
   find(selector) {
     // Deal with finds by id only
     if (typeof selector === 'string') {
-      selector = {_id: selector};
+      selector = { _id: selector };
     }
 
     var items = this._items;
@@ -22,6 +22,10 @@ StubCollection = class {
 
       forEach: function(fn) {
         _.each(this._res, fn);
+      },
+
+      map: function(fn) {
+        return this._res.map(fn);
       }
     };
   }
