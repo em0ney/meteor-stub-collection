@@ -26,6 +26,10 @@ StubCollection = class {
 
       map: function(fn) {
         return this._res.map(fn);
+      },
+
+      count: function() {
+        return this._res.length;
       }
     };
   }
