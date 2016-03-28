@@ -26,7 +26,7 @@ matchAttributeOnItem = function(item, key, value) {
     var first = key.slice(0, dotIndex);
     return matchAttributeOnItem(item[first], key.slice(dotIndex + 1), value);
   }
-    
+
   if (typeof value !== 'object') {
     return item[key] === value;
   }
@@ -34,6 +34,10 @@ matchAttributeOnItem = function(item, key, value) {
   return _.every(value, function(value1, key1) {
     if (key1 === '$in') {
       return matchDollarIn(item, key, value1);
+    }
+
+    if (key1 === '$exists') {
+      return matchDollarExists(item, key, value1);
     }
 
     if (key1 === '$gte') {
@@ -61,4 +65,8 @@ matchDollarIn = function(item, key, valueArray) {
   return _.some(valueArray, function(value) {
     return item[key] === value;
   });
+};
+
+matchDollarExists = function(item, key, booleanValue) {
+  return (typeof item[key] !== 'undefined') === booleanValue;
 };

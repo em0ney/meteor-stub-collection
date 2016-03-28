@@ -206,6 +206,50 @@ Tinytest.add('stub-collection: update() with a selector argument updates matchin
   })));
 });
 
+Tinytest.add('stub-collection: findOne() with a $exists: false operator', function(test) {
+  var TestCollection = new StubCollection();
+  var items = [
+    { name: 'one', notAlwaysPresent: 'present' },
+    { name: 'two', notAlwaysPresent: false },
+    { name: 'three' },
+  ];
+  TestCollection._setItems(items);
+  test.equal(TestCollection.findOne({ notAlwaysPresent: { $exists: false }}), items[2]);
+});
+
+Tinytest.add('stub-collection: count() with a $exists: false operator', function(test) {
+  var TestCollection = new StubCollection();
+  var items = [
+    { name: 'one', notAlwaysPresent: 'present' },
+    { name: 'two', notAlwaysPresent: false },
+    { name: 'three' },
+  ];
+  TestCollection._setItems(items);
+  test.equal(TestCollection.find({ notAlwaysPresent: { $exists: false }}).count(), 1);
+});
+
+Tinytest.add('stub-collection: findOne() with a $exists: true operator', function(test) {
+  var TestCollection = new StubCollection();
+  var items = [
+    { name: 'one', notAlwaysPresent: 'present' },
+    { name: 'two', notAlwaysPresent: false },
+    { name: 'three' },
+  ];
+  TestCollection._setItems(items);
+  test.equal(TestCollection.findOne({ notAlwaysPresent: { $exists: true }}), items[0]);
+});
+
+Tinytest.add('stub-collection: count() with a $exists: true operator', function(test) {
+  var TestCollection = new StubCollection();
+  var items = [
+    { name: 'one', notAlwaysPresent: 'present' },
+    { name: 'two', notAlwaysPresent: false },
+    { name: 'three' },
+  ];
+  TestCollection._setItems(items);
+  test.equal(TestCollection.find({ notAlwaysPresent: { $exists: true }}).count(), 2);
+});
+
 Tinytest.add('stub-collection: update() with a string argument updates the item with a matching id', function(test) {
   var TestCollection = new StubCollection();
   TestCollection._setItems([
