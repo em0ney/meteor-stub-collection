@@ -320,6 +320,20 @@ Tinytest.add('stub-collection: update() can apply $pull with array value', (test
   test.equal(record.array, ['four', 'two', 'one']);
 });
 
+Tinytest.add('stub-collection: update() can apply $pull with object value', (test) => {
+  let TestCollection = new StubCollection();
+  TestCollection._setItems([
+    {_id: 'abc123', name: 'test 1', array: [
+      { name: 'name1', value: 42 },
+      { name: 'name2', value: 43 }
+    ], numericAttribute: 41 }
+  ]);
+  TestCollection.update({ _id: 'abc123' }, { $pull: { array: { name: 'name1', value: 42 } }});
+
+  let record = TestCollection.findOne();
+  test.equal(record.array, [{ name: 'name2', value: 43 }]);
+});
+
 Tinytest.add('stub-collection: remove() removes record with matching id', (test) => {
   let TestCollection = new StubCollection();
   TestCollection._setItems([

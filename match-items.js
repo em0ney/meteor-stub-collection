@@ -24,7 +24,15 @@ matchAttributeOnItem = function(item, key, value) {
   var dotIndex = key.indexOf('.');
   if (dotIndex > -1) {
     var first = key.slice(0, dotIndex);
-    return matchAttributeOnItem(item[first], key.slice(dotIndex + 1), value);
+    var rest = key.slice(dotIndex + 1);
+    if (item[first] instanceof Array) {
+      // try match one element of sub-array (for cases like {emails.address: 'a@b.c'})
+      return item[first].some((element) => {
+        return element[rest] === value;
+      });
+    } else {
+      return matchAttributeOnItem(item[first], rest, value);
+    }
   }
 
   if (typeof value !== 'object') {

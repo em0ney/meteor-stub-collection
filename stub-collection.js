@@ -98,6 +98,12 @@ StubCollection = class {
         modifier[key].forEach((value) => {
           item[key] = _.without(item[key], value);
         });
+      } else if (modifier[key] instanceof Object) {
+        item[key] = _.filter(item[key], (obj) => {
+          return Object.keys(obj).every((key1) => {
+            return modifier[key][key1] !== obj[key1];
+          });
+        });
       } else {
         item[key] = _.without(item[key], modifier[key]);
       }
