@@ -13,7 +13,7 @@ StubCollection = class {
       selector = { _id: selector };
     }
 
-    var items = this._items;
+    let items = this._items;
     return {
       _res:  _.isEmpty(selector) ? items : matchItems(items, selector),
       fetch: function() {
@@ -37,8 +37,8 @@ StubCollection = class {
   rawCollection() {
     let _this = this;
     return {
-      insert: function() { _this.apply('insert', arguments); },
-      update: function() { _this.update.apply(_this, arguments); }
+      insert: () => { _this.apply('insert', arguments); },
+      update: () => { _this.update.apply(_this, arguments); }
     };
   }
 
@@ -53,16 +53,21 @@ StubCollection = class {
   }
 
   update(selector, modifier) {
-    var count = 0;
-    var items = this.find(selector);
+    let count = 0;
+    let items = this.find(selector);
+    let _this = this;
     var updateableItemIds = _.pluck(items.fetch(), '_id');
-    this._items = _.map(this._items, function(item) {
+    this._items = this._items.map((item) => {
       if (_.contains(updateableItemIds, item._id)) {
         count++;
         if (modifier.$set)
           _.extend(item, modifier.$set);
         if (modifier.$unset)
           item = _.omit(item, _.keys(modifier.$unset));
+        if (modifier.$addToSet)
+          item = _this.addToSet(item, modifier.$addToSet);
+        if (modifier.$pull)
+          item = _this.pull(item, modifier.$pull);
       }
 
       return item;
@@ -71,9 +76,39 @@ StubCollection = class {
     return count;
   }
 
+  addToSet(item, modifier) {
+    let keys = Object.keys(modifier);
+    keys.forEach((key) => {
+      if (modifier[key] instanceof Array) {
+        modifier[key].forEach((value) => {
+          item[key].push(value);
+        });
+      } else {
+        item[key].push(modifier[key]);
+      }
+    });
+
+    return item;
+  }
+
+  pull(item, modifier) {
+    let keys = Object.keys(modifier);
+    keys.forEach((key) => {
+      if (modifier[key] instanceof Array) {
+        modifier[key].forEach((value) => {
+          item[key] = _.without(item[key], value);
+        });
+      } else {
+        item[key] = _.without(item[key], modifier[key]);
+      }
+    });
+
+    return item;
+  }
+
   remove(id) {
     id = _.isObject(id) ? id._id : id;
-    var newItems = _.reject(this._items, function(item) {
+    let newItems = _.reject(this._items, (item) => {
       return item._id === id;
     });
 
@@ -84,4 +119,4 @@ StubCollection = class {
     this._items = newItems;
     return true;
   }
-}
+};
