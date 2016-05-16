@@ -37,8 +37,8 @@ StubCollection = class {
   rawCollection() {
     let _this = this;
     return {
-      insert: () => { _this.apply('insert', arguments); },
-      update: () => { _this.update.apply(_this, arguments); }
+      insert: (...args) => { _this.apply('insert', args); },
+      update: (...args) => { _this.update.apply(_this, args); }
     };
   }
 
