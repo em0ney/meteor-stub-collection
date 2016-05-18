@@ -1,6 +1,6 @@
 Package.describe({
   name: 'em0ney:stub-collection',
-  version: '0.2.1',
+  version: '0.2.2',
   summary: 'A class to stub out your collections when writing unit tests',
   git: 'git@github.com:em0ney/meteor-stub-collection.git',
   documentation: 'README.md'
@@ -15,8 +15,8 @@ Package.onUse(function(api) {
   ]);
 
   api.addFiles([
-    'match-items.js',
-    'stub-collection.js'
+    'lib/match-items.js',
+    'lib/stub-collection.js'
   ]);
 
   api.export('StubCollection');
@@ -25,8 +25,8 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use(['tinytest', 'ecmascript', 'underscore', 'random']);
   api.addFiles([
-    'match-items.js',
-    'stub-collection.js'
+    'lib/match-items.js',
+    'lib/stub-collection.js'
   ]);
-  api.addFiles('stub-collection-tests.js');
+  api.addFiles('test/stub-collection-tests.js');
 });
