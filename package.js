@@ -1,6 +1,6 @@
 Package.describe({
   name: 'em0ney:stub-collection',
-  version: '0.2.3',
+  version: '0.2.4',
   summary: 'A class to stub out your collections when writing unit tests',
   git: 'git@github.com:em0ney/meteor-stub-collection.git',
   documentation: 'README.md'
